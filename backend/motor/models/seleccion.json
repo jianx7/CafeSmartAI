@@ -1,0 +1,6 @@
+{
+  "seleccionado": "gradient_boosting_con_clima",
+  "usa_clima": true,
+  "respaldo_sin_clima": "gradient_boosting_sin_clima",
+  "por_franja": false
+}

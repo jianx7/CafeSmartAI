@@ -1,0 +1,47 @@
+[
+  {
+    "sucursal": "Astoria",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=40.765&longitude=-73.93&start_date=2023-01-01&end_date=2023-06-30&timezone=America%2FNew_York&models=era5&hourly=temperature_2m%2Crelative_humidity_2m&daily=rain_sum",
+    "latitud_celda": 40.75,
+    "longitud_celda": -74.0,
+    "unidades_horarias": {
+      "time": "iso8601",
+      "temperature_2m": "°C",
+      "relative_humidity_2m": "%"
+    },
+    "unidades_diarias": {
+      "time": "iso8601",
+      "rain_sum": "mm"
+    }
+  },
+  {
+    "sucursal": "Hell's Kitchen",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=40.7635&longitude=-73.9918&start_date=2023-01-01&end_date=2023-06-30&timezone=America%2FNew_York&models=era5&hourly=temperature_2m%2Crelative_humidity_2m&daily=rain_sum",
+    "latitud_celda": 40.75,
+    "longitud_celda": -74.0,
+    "unidades_horarias": {
+      "time": "iso8601",
+      "temperature_2m": "°C",
+      "relative_humidity_2m": "%"
+    },
+    "unidades_diarias": {
+      "time": "iso8601",
+      "rain_sum": "mm"
+    }
+  },
+  {
+    "sucursal": "Lower Manhattan",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=40.7128&longitude=-74.006&start_date=2023-01-01&end_date=2023-06-30&timezone=America%2FNew_York&models=era5&hourly=temperature_2m%2Crelative_humidity_2m&daily=rain_sum",
+    "latitud_celda": 40.75,
+    "longitud_celda": -74.0,
+    "unidades_horarias": {
+      "time": "iso8601",
+      "temperature_2m": "°C",
+      "relative_humidity_2m": "%"
+    },
+    "unidades_diarias": {
+      "time": "iso8601",
+      "rain_sum": "mm"
+    }
+  }
+]

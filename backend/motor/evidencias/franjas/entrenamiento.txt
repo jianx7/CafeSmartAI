@@ -1,0 +1,21 @@
+Train: 16,146 filas, 2023-01-08 a 2023-05-25
+Test: 4,212 filas, 2023-05-26 a 2023-06-30
+Ajuste random_forest {'n_estimators': 200, 'min_samples_leaf': 1}: MAE validación 5.113
+Ajuste random_forest {'n_estimators': 200, 'max_depth': 12, 'min_samples_leaf': 5}: MAE validación 4.897
+Ajuste gradient_boosting {'n_estimators': 200, 'max_depth': 2, 'learning_rate': 0.05, 'min_samples_leaf': 5}: MAE validación 5.059
+Ajuste gradient_boosting {'n_estimators': 200, 'max_depth': 3, 'learning_rate': 0.05, 'min_samples_leaf': 10}: MAE validación 4.990
+promedio_historico: MAE Train 4.251 | MAE Test 6.499 | acierto top 5 3.769/5
+promedio_7d: MAE Train 4.003 | MAE Test 5.525 | acierto top 5 3.645/5
+Entrenando random_forest_sin_clima con {'n_estimators': 200, 'max_depth': 12, 'min_samples_leaf': 5}
+random_forest_sin_clima: MAE Train 3.198 | MAE Test 5.391 | acierto top 5 3.620/5
+Guardado: models/franjas/random_forest_sin_clima.joblib
+Entrenando random_forest_con_clima con {'n_estimators': 200, 'max_depth': 12, 'min_samples_leaf': 5}
+random_forest_con_clima: MAE Train 2.983 | MAE Test 5.491 | acierto top 5 3.614/5
+Guardado: models/franjas/random_forest_con_clima.joblib
+Entrenando gradient_boosting_sin_clima con {'n_estimators': 200, 'max_depth': 3, 'learning_rate': 0.05, 'min_samples_leaf': 10}
+gradient_boosting_sin_clima: MAE Train 3.692 | MAE Test 5.284 | acierto top 5 3.648/5
+Guardado: models/franjas/gradient_boosting_sin_clima.joblib
+Entrenando gradient_boosting_con_clima con {'n_estimators': 200, 'max_depth': 3, 'learning_rate': 0.05, 'min_samples_leaf': 10}
+gradient_boosting_con_clima: MAE Train 3.593 | MAE Test 5.389 | acierto top 5 3.670/5
+Guardado: models/franjas/gradient_boosting_con_clima.joblib
+Seleccionado por validación: random_forest_con_clima

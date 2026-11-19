@@ -1,0 +1,5 @@
+algoritmo,hiperparametros,mae_validacion
+random_forest,"{'n_estimators': 200, 'min_samples_leaf': 1}",8.465467183169563
+random_forest,"{'n_estimators': 200, 'max_depth': 12, 'min_samples_leaf': 5}",8.319384510311066
+gradient_boosting,"{'n_estimators': 200, 'max_depth': 2, 'learning_rate': 0.05, 'min_samples_leaf': 5}",8.048327490236312
+gradient_boosting,"{'n_estimators': 200, 'max_depth': 3, 'learning_rate': 0.05, 'min_samples_leaf': 10}",8.037199570685255

@@ -1,0 +1,5 @@
+CSV original: 149,116 filas, 11 columnas
+Catálogo: 13 tipos, 39 pares sucursal-tipo
+Combinaciones sin ventas completadas con cero: 1,334
+Panel: 21,177 filas. Listas para entrenar: 20,358
+Guardado: data/processed/ventas_por_franja.csv

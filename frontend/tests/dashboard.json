@@ -1,0 +1,214 @@
+{
+  "consulta_id": 1,
+  "sucursal": "Hell's Kitchen",
+  "fecha": "2023-06-15",
+  "franja": null,
+  "prediccion": 572.92,
+  "clase_etiqueta": "Demanda Media",
+  "confianza_o_score": null,
+  "menu_top5": [
+    {
+      "producto": "Barista Espresso",
+      "categoria": "Coffee",
+      "unidades": 64.9,
+      "nivel": "Baja"
+    },
+    {
+      "producto": "Gourmet brewed coffee",
+      "categoria": "Coffee",
+      "unidades": 64.53,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Brewed Chai tea",
+      "categoria": "Tea",
+      "unidades": 62.2,
+      "nivel": "Baja"
+    },
+    {
+      "producto": "Brewed Black tea",
+      "categoria": "Tea",
+      "unidades": 58.35,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Brewed herbal tea",
+      "categoria": "Tea",
+      "unidades": 50.52,
+      "nivel": "Media"
+    }
+  ],
+  "productos": [
+    {
+      "producto": "Barista Espresso",
+      "categoria": "Coffee",
+      "unidades": 64.9,
+      "nivel": "Baja"
+    },
+    {
+      "producto": "Gourmet brewed coffee",
+      "categoria": "Coffee",
+      "unidades": 64.53,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Brewed Chai tea",
+      "categoria": "Tea",
+      "unidades": 62.2,
+      "nivel": "Baja"
+    },
+    {
+      "producto": "Brewed Black tea",
+      "categoria": "Tea",
+      "unidades": 58.35,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Brewed herbal tea",
+      "categoria": "Tea",
+      "unidades": 50.52,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Hot chocolate",
+      "categoria": "Drinking Chocolate",
+      "unidades": 44.92,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Premium brewed coffee",
+      "categoria": "Coffee",
+      "unidades": 44.76,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Drip coffee",
+      "categoria": "Coffee",
+      "unidades": 41.74,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Organic brewed coffee",
+      "categoria": "Coffee",
+      "unidades": 39.04,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Scone",
+      "categoria": "Bakery",
+      "unidades": 32.01,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Pastry",
+      "categoria": "Bakery",
+      "unidades": 27.26,
+      "nivel": "Alta"
+    },
+    {
+      "producto": "Brewed Green tea",
+      "categoria": "Tea",
+      "unidades": 24.96,
+      "nivel": "Media"
+    },
+    {
+      "producto": "Biscotti",
+      "categoria": "Bakery",
+      "unidades": 17.72,
+      "nivel": "Media"
+    }
+  ],
+  "tiempo_ms": 22,
+  "modelo": "gradient_boosting_con_clima",
+  "fuente_clima": "historico",
+  "clima": {
+    "temperatura_c": 21.029166666666665,
+    "lluvia_mm": 0.0,
+    "humedad_pct": 62.29166666666666
+  },
+  "ventas_estimadas_usd": 1775.15,
+  "variacion_pct": -2.33,
+  "categorias": [
+    {
+      "categoria": "Coffee",
+      "unidades": 254.97
+    },
+    {
+      "categoria": "Tea",
+      "unidades": 196.03
+    },
+    {
+      "categoria": "Drinking Chocolate",
+      "unidades": 44.92
+    },
+    {
+      "categoria": "Bakery",
+      "unidades": 76.99
+    }
+  ],
+  "demanda_franjas": [
+    {
+      "franja": "06:00–10:59",
+      "unidades": 326.87
+    },
+    {
+      "franja": "11:00–14:59",
+      "unidades": 121.73
+    },
+    {
+      "franja": "15:00–20:59",
+      "unidades": 143.85
+    }
+  ],
+  "tendencia": [
+    {
+      "fecha": "2023-06-09",
+      "reales": 609.0,
+      "estimadas": 547.17
+    },
+    {
+      "fecha": "2023-06-10",
+      "reales": 545.0,
+      "estimadas": 544.94
+    },
+    {
+      "fecha": "2023-06-11",
+      "reales": 564.0,
+      "estimadas": 463.83
+    },
+    {
+      "fecha": "2023-06-12",
+      "reales": 569.0,
+      "estimadas": 571.78
+    },
+    {
+      "fecha": "2023-06-13",
+      "reales": 682.0,
+      "estimadas": 570.68
+    },
+    {
+      "fecha": "2023-06-14",
+      "reales": 578.0,
+      "estimadas": 583.18
+    },
+    {
+      "fecha": "2023-06-15",
+      "reales": 499.0,
+      "estimadas": 572.92
+    }
+  ],
+  "sucursales": [
+    {
+      "sucursal": "Astoria",
+      "unidades_reales": 585
+    },
+    {
+      "sucursal": "Hell's Kitchen",
+      "unidades_reales": 499
+    },
+    {
+      "sucursal": "Lower Manhattan",
+      "unidades_reales": 464
+    }
+  ]
+}

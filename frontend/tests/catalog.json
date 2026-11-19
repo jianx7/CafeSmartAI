@@ -1,0 +1,14 @@
+{
+  "sucursales": ["Astoria", "Hell's Kitchen", "Lower Manhattan"],
+  "franjas": ["06:00–10:59", "11:00–14:59", "15:00–20:59"],
+  "fecha_min": "2023-05-26",
+  "fecha_max": "2023-06-30",
+  "moneda": "USD",
+  "ejemplo": {
+    "sucursal": "Hell's Kitchen",
+    "fecha": "2023-06-15",
+    "franja": null,
+    "periodo": 7,
+    "clima": null
+  }
+}

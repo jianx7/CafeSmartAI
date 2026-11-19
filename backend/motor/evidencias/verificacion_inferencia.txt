@@ -1,0 +1,7 @@
+OK evidencias: 572.92 unidades, coincide con predicciones de prueba.
+OK evidencias/franjas: 326.87 unidades, coincide con predicciones de prueba.
+OK rechazo: Se requieren siete días previos de ventas para esa sucursal.
+OK rechazo: Sucursal desconocida. Usa Astoria, Hell's Kitchen o Lower Manhattan.
+OK rechazo: Franja inválida. Consulta las franjas del README.
+OK rechazo: lluvia_mm debe estar entre 0 y 300.
+OK clima manual aceptado.

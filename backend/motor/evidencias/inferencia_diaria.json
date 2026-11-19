@@ -1,0 +1,48 @@
+{
+  "entrada": {
+    "sucursal": "Hell's Kitchen",
+    "fecha": "2023-06-15",
+    "franja": null
+  },
+  "salida": {
+    "prediccion": 572.92,
+    "clase_etiqueta": "Demanda Media",
+    "confianza_o_score": null,
+    "menu_top5": [
+      {
+        "producto": "Barista Espresso",
+        "categoria": "Coffee",
+        "unidades": 64.9,
+        "nivel": "Baja"
+      },
+      {
+        "producto": "Gourmet brewed coffee",
+        "categoria": "Coffee",
+        "unidades": 64.53,
+        "nivel": "Media"
+      },
+      {
+        "producto": "Brewed Chai tea",
+        "categoria": "Tea",
+        "unidades": 62.2,
+        "nivel": "Baja"
+      },
+      {
+        "producto": "Brewed Black tea",
+        "categoria": "Tea",
+        "unidades": 58.35,
+        "nivel": "Media"
+      },
+      {
+        "producto": "Brewed herbal tea",
+        "categoria": "Tea",
+        "unidades": 50.52,
+        "nivel": "Media"
+      }
+    ],
+    "tiempo_ms": 1032,
+    "modelo": "gradient_boosting_con_clima",
+    "fuente_clima": "historico",
+    "franja": null
+  }
+}

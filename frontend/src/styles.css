@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --color-canvas: #f5f3ee;
+  --color-surface: #ffffff;
+  --color-ink: #332d29;
+  --color-muted: #6c625a;
+  --color-line: #e5e0d8;
+  --color-coffee: #694832;
+  --color-sky-soft: #e2eff4;
+  --color-sand-soft: #eee3d0;
+}
+:root[data-theme="dark"] {
+  --color-canvas: #1d1a18;
+  --color-surface: #282421;
+  --color-ink: #f3eee8;
+  --color-muted: #c2b8ae;
+  --color-line: #4b423a;
+  --color-coffee: #dfc0a4;
+  --color-sky-soft: #263b43;
+  --color-sand-soft: #403529;
+  color-scheme: dark;
+}
+@layer base {
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+  }
+  button,
+  select,
+  summary {
+    @apply cursor-pointer;
+  }
+  button:disabled {
+    @apply cursor-wait opacity-50;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-3 outline-coffee;
+  }
+}
+@layer components {
+  .btn {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium transition-colors hover:bg-canvas;
+  }
+  .btn-primary {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-[#694832] bg-[#694832] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#513725];
+  }
+  .field {
+    @apply grid gap-1.5 text-xs text-muted;
+  }
+  .field input:not([type="checkbox"]),
+  .field select,
+  .field textarea {
+    @apply min-h-10 w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink;
+  }
+  .data-table {
+    @apply w-full text-left text-sm;
+  }
+  .data-table th {
+    @apply border-b border-line pb-3 pr-5 text-xs font-medium text-muted;
+  }
+  .data-table td {
+    @apply border-b border-line py-4 pr-5;
+  }
+}
