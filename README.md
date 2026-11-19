@@ -19,11 +19,8 @@ Todo lo necesario ya viene incluido: los datos y los modelos entrenados. Solo ne
 
 Haz estos pasos **en orden**. Usa dos terminales de PowerShell y no cierres ninguna mientras uses la app.
 
-### Paso 1 · Abre la carpeta correcta
 
-Descomprime el ZIP y abre en VS Code la carpeta `CafeSmartAI_Funcional`. Debe contener las carpetas `backend` y `frontend`. Abre la terminal con **Terminal → Nueva terminal**.
-
-### Paso 2 · Instala y arranca el backend (Terminal 1)
+### Paso 1 · Instala y arranca el backend (Terminal 1)
 
 ```powershell
 cd backend
@@ -37,7 +34,7 @@ py -3.13 -m venv .venv
 - Debe aparecer `Uvicorn running on http://127.0.0.1:8000`. **Deja esta terminal abierta.**
 - Comprueba que funciona: abre <http://127.0.0.1:8000/health>. Debe mostrar `{"status":"ok"}`.
 
-### Paso 3 · Instala y arranca el frontend (Terminal 2)
+### Paso 2 · Instala y arranca el frontend (Terminal 2)
 
 Abre una segunda terminal con el botón **+** del panel de terminal. Debe iniciar en la carpeta raíz del proyecto.
 
@@ -50,7 +47,7 @@ npm run dev
 - `npm ci` se ejecuta solo la primera vez.
 - Debe aparecer una dirección local `http://127.0.0.1:5173`. **Deja esta terminal abierta.**
 
-### Paso 4 · Abre la aplicación y comprueba que todo funciona
+### Paso 3 · Abre la aplicación y comprueba que todo funciona
 
 1. Abre <http://127.0.0.1:5173> en el navegador.
 2. Pulsa **Cargar ejemplo**.
@@ -80,7 +77,7 @@ python3.13 -m venv .venv
 ./.venv/bin/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-El Paso 3 usa los mismos comandos de npm.
+El Paso 2 usa los mismos comandos de npm.
 
 ## Si algo falla
 
