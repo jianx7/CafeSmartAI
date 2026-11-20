@@ -15,7 +15,7 @@ class Clima(BaseModel):
 class ConsultaEntrada(BaseModel):
     model_config = ConfigDict(extra="forbid")
     sucursal: Literal["Astoria", "Hell's Kitchen", "Lower Manhattan"]
-    fecha: date = Field(ge=date(2023, 5, 26), le=date(2023, 6, 30))
+    fecha: date = Field(ge=date(2023, 5, 26), le=date(2027, 12, 31))
     franja: Literal["06:00–10:59", "11:00–14:59", "15:00–20:59"] | None = None
     periodo: Literal[7, 14, 30] = 7
     clima: Clima | None = None
@@ -41,7 +41,8 @@ class PuntoTendencia(BaseModel):
 
 class Sucursal(BaseModel):
     sucursal: str
-    unidades_reales: int
+    unidades_reales: int | None = None
+    unidades_estimadas: float | None = None
 
 
 class DemandaFranja(BaseModel):
@@ -62,7 +63,9 @@ class PrediccionSalida(BaseModel):
     tiempo_ms: int
     modelo: str
     fuente_clima: str | None
-    clima: Clima
+    clima: Clima | None
+    modo: Literal["historico", "escenario"] = "historico"
+    base_ventas: dict[str, str] | None = None
     ventas_estimadas_usd: float
     variacion_pct: float | None
     categorias: list[Categoria]

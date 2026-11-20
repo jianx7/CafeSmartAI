@@ -30,7 +30,7 @@ describe("Dashboard conectado al contrato del motor", () => {
     render(<App />);
     await screen.findAllByText("572.9", { exact: true });
     await user.click(
-      screen.getByRole("button", { name: "Recomendaciones", exact: true }),
+      screen.getByRole("button", { name: "Recomendaciones"}),
     );
     await screen.findByRole("heading", { name: "Todos los tipos de producto" });
     expect(screen.getAllByRole("row")).toHaveLength(14);
@@ -44,7 +44,7 @@ describe("Dashboard conectado al contrato del motor", () => {
       "06:00–10:59",
     );
     await user.click(
-      screen.getByRole("button", { name: "Estimar menú", exact: true }),
+      screen.getByRole("button", { name: "Estimar menú"}),
     );
     await waitFor(() =>
       expect(dashboardApi.predict).toHaveBeenLastCalledWith(
@@ -58,6 +58,24 @@ describe("Dashboard conectado al contrato del motor", () => {
     );
   });
 
+    it("avisa cuando la fecha es un escenario posterior al dataset", async () => {
+    vi.mocked(dashboardApi.predict).mockResolvedValue({
+      ...(dashboard as Dashboard),
+      fecha: "2026-11-19",
+      modo: "escenario",
+      base_ventas: { desde: "2023-06-24", hasta: "2023-06-30" },
+      fuente_clima: null,
+      clima: null,
+      tendencia: [],
+      sucursales: [
+        { sucursal: "Astoria", unidades_reales: null, unidades_estimadas: 150 },
+      ],
+    });
+    render(<App />);
+    await screen.findByText(/Escenario, no pronóstico validado/);
+    expect(screen.getByText("Sin clima")).toBeTruthy();
+  });
+
   it("permite reintentar un error real de la API y asociar un reporte a la consulta", async () => {
     vi.mocked(dashboardApi.predict).mockRejectedValueOnce(
       new Error("API no disponible"),
@@ -66,18 +84,18 @@ describe("Dashboard conectado al contrato del motor", () => {
     render(<App />);
     await screen.findByRole("alert");
     await user.click(
-      screen.getByRole("button", { name: "Reintentar", exact: true }),
+      screen.getByRole("button", { name: "Reintentar" }),
     );
     await screen.findAllByText("572.9", { exact: true });
     await user.click(
-      screen.getByRole("button", { name: "Configuración", exact: true }),
+      screen.getByRole("button", { name: "Configuración"}),
     );
     await user.type(
       screen.getByLabelText("Describe el problema observado"),
       "Verificar el menú recomendado.",
     );
     await user.click(
-      screen.getByRole("button", { name: "Guardar reporte", exact: true }),
+      screen.getByRole("button", { name: "Guardar reporte"}),
     );
     await screen.findByText(/Reporte #3 guardado/);
     expect(dashboardApi.report).toHaveBeenCalledWith(
