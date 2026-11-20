@@ -65,7 +65,7 @@ export default function App() {
       </a>
       <aside className="border-b border-line bg-surface p-4 lg:fixed lg:inset-y-0 lg:left-0 lg:w-60 lg:border-b-0 lg:border-r lg:px-5 lg:py-9">
         <div className="flex items-center gap-3 px-2">
-          <Coffee size={28} className="text-coffee" />
+          <img src="/CafeSmartIA.svg" alt="CaféSmart AI Logo" className="h-8 w-8 object-contain" />
           <span className="text-xl font-semibold tracking-tight">
             CaféSmart <small className="text-xs text-coffee">AI</small>
           </span>
