@@ -79,10 +79,16 @@ def predecir(entrada: dict) -> dict:
         if not isinstance(franja, str) or franja not in set(panel.franja):
             raise ValueError("Franja inválida. Consulta las franjas del README.")
         panel = panel[panel.franja == franja]
-    if fecha < panel.fecha.min() or fecha > panel.fecha.max():
-        raise ValueError("Fecha fuera del periodo histórico del prototipo.")
-
-    dias_previos = pd.date_range(end=fecha - pd.Timedelta(days=1), periods=7)
+    if fecha < panel.fecha.min():
+        raise ValueError("Fecha anterior al periodo histórico del prototipo.")
+    # Modo escenario: una fecha posterior al dataset no tiene ventas previas reales.
+    # Se toman como base los últimos siete días disponibles y se usan el día de la
+    # semana y el mes de la fecha pedida. No es un pronóstico validado.
+    escenario = fecha > panel.fecha.max()
+    if escenario:
+        dias_previos = pd.date_range(end=panel.fecha.max(), periods=7)
+    else:
+        dias_previos = pd.date_range(end=fecha - pd.Timedelta(days=1), periods=7)
     historico = panel[panel.fecha.isin(dias_previos)]
     if len(historico) != panel.producto.nunique() * len(dias_previos):
         raise ValueError("Se requieren siete días previos de ventas para esa sucursal.")
@@ -129,6 +135,9 @@ def predecir(entrada: dict) -> dict:
         "modelo": nombre,
         "fuente_clima": fuente_clima,
         "franja": franja,
+        "modo": "escenario" if escenario else "historico",
+        "base_ventas": {"desde": dias_previos[0].date().isoformat(),
+                        "hasta": dias_previos[-1].date().isoformat()},
     }
 
 
