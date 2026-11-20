@@ -22,9 +22,29 @@ interface Props {
   manual: boolean;
 }
 
+export function ScenarioNotice({ data }: { data: Dashboard }) {
+  if (data.modo !== "escenario") return null;
+  return (
+    <div
+      role="note"
+      className="rounded-2xl border border-line bg-sand-soft px-5 py-4 text-sm leading-relaxed"
+    >
+      <strong>Escenario, no pronóstico validado.</strong> {day(data.fecha)} es
+      posterior al dataset. La estimación usa como base las ventas del{" "}
+      {data.base_ventas ? day(data.base_ventas.desde) : "último periodo"} al{" "}
+      {data.base_ventas ? day(data.base_ventas.hasta) : "disponible"}, más el
+      día de la semana y el mes de la fecha elegida.{" "}
+      {data.fuente_clima === "entrada"
+        ? "Incluye el clima que ingresaste."
+        : "Sin clima manual, el modelo no usa variables climáticas."}
+    </div>
+  );
+}
+
 export function Home({ data, goTo, manual }: Props) {
   return (
     <>
+      <ScenarioNotice data={data} />
       <div className="grid gap-5 xl:grid-cols-3">
         <Card className="bg-sky-soft">
           <div className="flex items-center justify-between">
@@ -46,7 +66,9 @@ export function Home({ data, goTo, manual }: Props) {
             </div>
             <div>
               <span className="text-xs text-muted">
-                Frente a los 7 días previos
+                {data.modo === "escenario"
+                  ? "Frente al promedio base"
+                  : "Frente a los 7 días previos"}
               </span>
               <strong className="mt-1 block text-xl">
                 {data.variacion_pct === null
@@ -62,13 +84,25 @@ export function Home({ data, goTo, manual }: Props) {
             <CloudSun size={17} />
             Clima del escenario
           </span>
-          <h2 className="mt-4 text-2xl font-semibold">
-            {number(data.clima.temperatura_c)} °C
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            Lluvia {number(data.clima.lluvia_mm)} mm · humedad{" "}
-            {number(data.clima.humedad_pct)} %
-          </p>
+          {data.clima ? (
+            <>
+              <h2 className="mt-4 text-2xl font-semibold">
+                {number(data.clima.temperatura_c)} °C
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Lluvia {number(data.clima.lluvia_mm)} mm · humedad{" "}
+                {number(data.clima.humedad_pct)} %
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="mt-4 text-2xl font-semibold">Sin clima</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                No hay clima histórico para esta fecha. Usa «Ajustar clima del
+                escenario» para simular uno.
+              </p>
+            </>
+          )}
           <p className="my-4 text-sm">
             Prioriza los tipos con más unidades estimadas. {data.clase_etiqueta}{" "}
             frente al historial reciente.
@@ -139,6 +173,7 @@ export function Recommendations({ data }: { data: Dashboard }) {
         Menú ordenado por unidades estimadas para {day(data.fecha)} ·{" "}
         {data.franja ?? "día completo"}.
       </PageTitle>
+      <ScenarioNotice data={data} />
       <Card>
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-semibold">Todos los tipos de producto</h2>
@@ -193,7 +228,9 @@ export function Recommendations({ data }: { data: Dashboard }) {
           climática{" "}
           {data.fuente_clima === "entrada"
             ? "escenario manual"
-            : "histórico ERA5"}
+            : data.fuente_clima === "historico"
+              ? "histórico ERA5"
+              : "no utilizada"}
           .
         </p>
       </Card>
@@ -207,7 +244,18 @@ export function Sales({ data, manual }: { data: Dashboard; manual: boolean }) {
       <PageTitle title="Análisis de ventas">
         Comparación retrospectiva de unidades en el periodo de prueba.
       </PageTitle>
-      <TrendChart data={data.tendencia} manual={manual} />
+      {data.modo === "escenario" ? (
+        <Card>
+          <h2 className="font-semibold">Sin ventas reales para esta fecha</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            La comparación de unidades reales y estimadas solo existe para el
+            periodo de prueba (26 de mayo al 30 de junio de 2023). Elige una
+            fecha de ese periodo para verla.
+          </p>
+        </Card>
+      ) : (
+        <TrendChart data={data.tendencia} manual={manual} />
+      )}
       <Card>
         <h2 className="font-semibold">Alcance de la estimación</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
@@ -226,7 +274,10 @@ export function Branches({ data }: { data: Dashboard }) {
   return (
     <>
       <PageTitle title="Sucursales de Nueva York">
-        Unidades reales del día completo · {day(data.fecha)}.
+        {data.modo === "escenario"
+          ? "Unidades estimadas del día completo"
+          : "Unidades reales del día completo"}{" "}
+        · {day(data.fecha)}.
       </PageTitle>
       <Card>
         <div className="overflow-x-auto">
@@ -234,14 +285,20 @@ export function Branches({ data }: { data: Dashboard }) {
             <thead>
               <tr>
                 <th>Sucursal</th>
-                <th>Unidades vendidas</th>
+                <th>
+                  {data.modo === "escenario"
+                    ? "Unidades estimadas"
+                    : "Unidades vendidas"}
+                </th>
               </tr>
             </thead>
             <tbody>
               {data.sucursales.map((row) => (
                 <tr key={row.sucursal}>
                   <td className="font-medium">{row.sucursal}</td>
-                  <td>{number(row.unidades_reales)}</td>
+                  <td>
+                    {number(row.unidades_reales ?? row.unidades_estimadas ?? 0)}
+                  </td>
                 </tr>
               ))}
             </tbody>

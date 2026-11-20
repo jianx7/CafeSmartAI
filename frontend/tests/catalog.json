@@ -10,5 +10,6 @@
     "franja": null,
     "periodo": 7,
     "clima": null
-  }
+  },
+  "escenario_hasta": "2027-12-31"
 }

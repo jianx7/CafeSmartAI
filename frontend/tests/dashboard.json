@@ -197,18 +197,26 @@
       "estimadas": 572.92
     }
   ],
-  "sucursales": [
+    "sucursales": [
     {
       "sucursal": "Astoria",
-      "unidades_reales": 585
+      "unidades_reales": 585,
+      "unidades_estimadas": null
     },
     {
       "sucursal": "Hell's Kitchen",
-      "unidades_reales": 499
+      "unidades_reales": 499,
+      "unidades_estimadas": null
     },
     {
       "sucursal": "Lower Manhattan",
-      "unidades_reales": 464
+      "unidades_reales": 464,
+      "unidades_estimadas": null
     }
-  ]
+  ],
+  "modo": "historico",
+  "base_ventas": {
+    "desde": "2023-06-08",
+    "hasta": "2023-06-14"
+  }
 }
