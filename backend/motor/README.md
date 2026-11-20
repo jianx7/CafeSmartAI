@@ -1,4 +1,4 @@
-# CafeSmart AI - Modelo
+# CafeSmart AI · Entrega 3
 
 > Este archivo es solo para volver a entrenar el modelo. Para ejecutar la aplicación, sigue el README de la raíz del proyecto. No necesitas nada de lo que sigue.
 
@@ -60,7 +60,7 @@ Las franjas elegidas para cubrir el horario del CSV son **06:00–10:59**, **11:
 .\.venv\Scripts\python.exe -m src.models.predict --franja "06:00–10:59"
 ```
 
-Ambos comandos usan Hell's Kitchen y el 15 de junio de 2023. Para cambiar el ejemplo, usa `--sucursal "Astoria" --fecha 2023-06-20`. El backend de la aplicación ya importa `predecir` desde `src.models.predict`. Recibe un diccionario con `sucursal`, `fecha`, `franja` opcional y `clima` opcional. Solo admite el rango histórico de la demo y requiere siete días de ventas previas. La evaluación es retrospectiva: un pronóstico real antes de abrir necesitaría clima disponible a esa hora y una fuente actualizada de ventas.
+Ambos comandos usan Hell's Kitchen y el 15 de junio de 2023. Para cambiar el ejemplo, usa `--sucursal "Astoria" --fecha 2023-06-20`. El backend de la aplicación ya importa `predecir` desde `src.models.predict`. Recibe un diccionario con `sucursal`, `fecha`, `franja` opcional y `clima` opcional. Para fechas del dataset usa los siete días previos reales. Para fechas posteriores al 30 de junio de 2023 trabaja en modo escenario con los últimos siete días disponibles y devuelve `modo` y `base_ventas`. La evaluación es retrospectiva: un pronóstico real antes de abrir necesitaría clima disponible a esa hora y una fuente actualizada de ventas.
 
 ## 6. Ubica las evidencias
 
