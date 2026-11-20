@@ -16,6 +16,7 @@ from src.models.predict import cargar_modelo, predecir  # noqa: E402
 
 INICIO = "2023-05-26"
 FIN = "2023-06-30"
+LIMITE = "2027-12-31"
 FRANJAS = ["06:00–10:59", "11:00–14:59", "15:00–20:59"]
 
 
@@ -56,6 +57,7 @@ class MotorLocal:
             "franjas": FRANJAS,
             "fecha_min": INICIO,
             "fecha_max": FIN,
+            "escenario_hasta": LIMITE,
             "moneda": "USD",
             "ejemplo": {
                 "sucursal": "Hell's Kitchen",
@@ -88,9 +90,10 @@ class MotorLocal:
     def calcular(self, consulta: Consulta) -> dict:
         if consulta.sucursal not in self.catalogo()["sucursales"]:
             raise ValueError("La sucursal no pertenece al dataset.")
-        if not INICIO <= consulta.fecha <= FIN:
-            raise ValueError(f"Selecciona una fecha entre {INICIO} y {FIN}.")
+        if not INICIO <= consulta.fecha <= LIMITE:
+            raise ValueError(f"Selecciona una fecha entre {INICIO} y {LIMITE}.")
         date.fromisoformat(consulta.fecha)
+        escenario = consulta.fecha > FIN
         if consulta.franja is not None and consulta.franja not in FRANJAS:
             raise ValueError("Selecciona una franja válida.")
         resultado = predecir(consulta.entrada_modelo())
@@ -116,19 +119,48 @@ class MotorLocal:
             categoria = producto["categoria"]
             categorias[categoria] = categorias.get(categoria, 0) + producto["unidades"]
         clima = consulta.clima
-        if clima is None:
+        if clima is None and not escenario:
             fila = self.clima.loc[
                 self.clima.sucursal.eq(consulta.sucursal) & self.clima.fecha.eq(consulta.fecha)
             ].iloc[0]
             clima = {k: float(fila[k]) for k in ("temperatura_c", "lluvia_mm", "humedad_pct")}
         tabla = self.panel_franjas if consulta.franja is not None else self.panel
-        mask = tabla.sucursal.eq(consulta.sucursal) & tabla.fecha.eq(consulta.fecha)
-        if consulta.franja is not None:
-            mask &= tabla.franja.eq(consulta.franja)
-        previo = float(tabla.loc[mask, "unidades_prom7"].sum())
-        comparativo = (
-            self.panel.loc[self.panel.fecha.eq(consulta.fecha)].groupby("sucursal").unidades.sum()
-        )
+        if escenario:
+            # Base del escenario: promedio diario de los últimos siete días del dataset.
+            mask = tabla.sucursal.eq(consulta.sucursal) & tabla.fecha.isin(
+                pd.date_range(end=FIN, periods=7)
+            )
+            if consulta.franja is not None:
+                mask &= tabla.franja.eq(consulta.franja)
+            previo = float(tabla.loc[mask, "unidades"].sum()) / 7
+            sucursales = [
+                {
+                    "sucursal": nombre,
+                    "unidades_reales": None,
+                    "unidades_estimadas": predecir(
+                        {**consulta.entrada_modelo(), "sucursal": nombre, "franja": None}
+                    )["prediccion"],
+                }
+                for nombre in self.catalogo()["sucursales"]
+            ]
+            tendencia = []
+        else:
+            mask = tabla.sucursal.eq(consulta.sucursal) & tabla.fecha.eq(consulta.fecha)
+            if consulta.franja is not None:
+                mask &= tabla.franja.eq(consulta.franja)
+            previo = float(tabla.loc[mask, "unidades_prom7"].sum())
+            comparativo = (
+                self.panel.loc[self.panel.fecha.eq(consulta.fecha)]
+                .groupby("sucursal")
+                .unidades.sum()
+            )
+            sucursales = [
+                {"sucursal": k, "unidades_reales": int(v), "unidades_estimadas": None}
+                for k, v in comparativo.items()
+            ]
+            tendencia = self.tendencia(
+                consulta.sucursal, consulta.fecha, consulta.franja, consulta.periodo
+            )
         return {
             **resultado,
             "sucursal": consulta.sucursal,
@@ -142,10 +174,6 @@ class MotorLocal:
             ],
             "demanda_franjas": demanda_franjas,
             "clima": clima,
-            "tendencia": self.tendencia(
-                consulta.sucursal, consulta.fecha, consulta.franja, consulta.periodo
-            ),
-            "sucursales": [
-                {"sucursal": k, "unidades_reales": int(v)} for k, v in comparativo.items()
-            ],
+            "tendencia": tendencia,
+            "sucursales": sucursales,
         }
