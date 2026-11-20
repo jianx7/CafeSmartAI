@@ -44,15 +44,20 @@ export function Filters({ catalog, initial, loading, onSubmit }: Props) {
           </select>
         </label>
         <label className="field flex-1 min-w-40">
-          <span>Fecha histórica</span>
+          <span>Fecha</span>
           <input
             required
             type="date"
             min={catalog.fecha_min}
-            max={catalog.fecha_max}
+            max={catalog.escenario_hasta}
             value={draft.fecha}
             onChange={(e) => setDraft({ ...draft, fecha: e.target.value })}
           />
+          {draft.fecha > catalog.fecha_max && (
+            <small className="text-[11px] text-muted">
+              Posterior al dataset: se calcula como escenario.
+            </small>
+          )}
         </label>
         <label className="field flex-1 min-w-44">
           <span>Horario</span>
