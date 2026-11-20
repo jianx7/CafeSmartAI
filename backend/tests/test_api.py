@@ -60,7 +60,7 @@ class ApiIntegrationTest(unittest.TestCase):
         example = {"sucursal": "Astoria", "fecha": "2023-06-15"}
         for changes in [
             {"sucursal": "Centro"},
-            {"fecha": "2026-11-17"},
+            {"fecha": "2028-01-01"},
             {"franja": "Noche"},
             {"periodo": 100},
             {"clima": {"temperatura_c": 20, "humedad_pct": 60, "lluvia_mm": -1}},
@@ -68,6 +68,40 @@ class ApiIntegrationTest(unittest.TestCase):
             response = self.client.post("/api/predecir", json={**example, **changes})
             self.assertEqual(response.status_code, 422, response.text)
         self.assertEqual(len(self.client.get("/api/historial").json()), initial)
+
+    def test_future_date_runs_as_scenario(self):
+        payload = {"sucursal": "Hell's Kitchen", "fecha": "2026-11-19"}
+        response = self.client.post("/api/predecir", json=payload)
+        self.assertEqual(response.status_code, 200, response.text)
+        data = response.json()
+        self.assertEqual(data["modo"], "escenario")
+        self.assertEqual(data["base_ventas"], {"desde": "2023-06-24", "hasta": "2023-06-30"})
+        self.assertEqual(data["fecha"], "2026-11-19")
+        self.assertEqual(len(data["productos"]), 13)
+        self.assertGreater(data["prediccion"], 0)
+        self.assertIsNone(data["clima"])
+        self.assertIsNone(data["fuente_clima"])
+        self.assertEqual(data["modelo"], "gradient_boosting_sin_clima")
+        self.assertEqual(data["tendencia"], [])
+        self.assertEqual(len(data["sucursales"]), 3)
+        self.assertTrue(all(s["unidades_reales"] is None for s in data["sucursales"]))
+        manual = self.client.post(
+            "/api/predecir",
+            json={**payload, "clima": {"temperatura_c": 8, "humedad_pct": 70, "lluvia_mm": 0}},
+        )
+        self.assertEqual(manual.status_code, 200, manual.text)
+        self.assertEqual(manual.json()["fuente_clima"], "entrada")
+        self.assertEqual(manual.json()["modo"], "escenario")
+        band = self.client.post("/api/predecir", json={**payload, "franja": "06:00–10:59"})
+        self.assertEqual(band.status_code, 200, band.text)
+        self.assertLess(band.json()["prediccion"], data["prediccion"])
+
+    def test_historical_mode_is_unchanged(self):
+        data = self.client.post(
+            "/api/predecir", json={"sucursal": "Hell's Kitchen", "fecha": "2023-06-15"}
+        ).json()
+        self.assertEqual(data["modo"], "historico")
+        self.assertEqual(data["prediccion"], 572.92)
 
     def test_reports_and_persistence(self):
         response = self.client.post(
@@ -108,3 +142,4 @@ class ApiIntegrationTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    
