@@ -23,6 +23,7 @@ export interface Catalog {
   franjas: string[];
   fecha_min: string;
   fecha_max: string;
+  escenario_hasta: string;
   moneda: string;
   ejemplo: Query;
 }
@@ -45,13 +46,19 @@ export interface Dashboard {
   tiempo_ms: number;
   modelo: string;
   fuente_clima: string | null;
-  clima: Weather;
+  clima: Weather | null;
+  modo: "historico" | "escenario";
+  base_ventas: { desde: string; hasta: string } | null;
   ventas_estimadas_usd: number;
   variacion_pct: number | null;
   categorias: { categoria: string; unidades: number }[];
   demanda_franjas: { franja: string; unidades: number }[];
   tendencia: { fecha: string; reales: number; estimadas: number }[];
-  sucursales: { sucursal: string; unidades_reales: number }[];
+  sucursales: {
+    sucursal: string;
+    unidades_reales: number | null;
+    unidades_estimadas: number | null;
+  }[];
 }
 export interface HistoryEntry {
   id: number;
