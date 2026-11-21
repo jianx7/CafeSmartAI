@@ -21,6 +21,7 @@ interface Props {
   goTo: (section: Section) => void;
   manual: boolean;
 }
+import { productImage } from "../components/productImages";
 
 export function ScenarioNotice({ data }: { data: Dashboard }) {
   if (data.modo !== "escenario") return null;
@@ -127,27 +128,67 @@ export function Home({ data, goTo, manual }: Props) {
           </button>
         </div>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-          {data.menu_top5.map((product) => (
-            <article
-              key={product.producto}
-              className="rounded-xl border border-line bg-canvas p-4"
-            >
-              <Coffee className="mb-4 text-coffee" size={24} />
-              <p className="text-xs text-muted">
-                {categoryNames[product.categoria]}
-              </p>
-              <h3 className="mt-1 min-h-10 text-sm font-semibold">
-                {product.producto}
-              </h3>
-              <p className="mt-4 text-2xl font-semibold">
-                {number(product.unidades)}
-              </p>
-              <p className="text-xs text-muted">unidades estimadas</p>
-              <span className="mt-3 inline-block rounded-full bg-sand-soft px-2.5 py-1 text-xs">
-                Demanda {product.nivel.toLowerCase()}
-              </span>
-            </article>
-          ))}
+          {data.menu_top5.map((product) => {
+            const photo = productImage(product.producto);
+            return (
+              <article
+                key={product.producto}
+                className={`relative isolate overflow-hidden rounded-xl border border-line p-4 ${
+                  photo
+                    ? "text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.7)]"
+                    : "bg-canvas"
+                }`}
+              >
+                {photo && (
+                  <>
+                    <img
+                      src={photo}
+                      alt=""
+                      loading="lazy"
+                      className="absolute inset-0 -z-20 h-full w-full object-cover"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 -z-10"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to top, rgba(20,12,8,0.9) 0%, rgba(20,12,8,0.6) 55%, rgba(20,12,8,0.3) 100%)",
+                      }}
+                    />
+                  </>
+                )}
+                <Coffee
+                  className={`mb-4 ${photo ? "text-white" : "text-coffee"}`}
+                  size={24}
+                />
+                <p
+                  className={`text-xs ${photo ? "text-white/90" : "text-muted"}`}
+                >
+                  {categoryNames[product.categoria]}
+                </p>
+                <h3 className="mt-1 min-h-10 text-sm font-semibold">
+                  {product.producto}
+                </h3>
+                <p className="mt-4 text-2xl font-semibold">
+                  {number(product.unidades)}
+                </p>
+                <p
+                  className={`text-xs ${photo ? "text-white/90" : "text-muted"}`}
+                >
+                  unidades estimadas
+                </p>
+                <span
+                  className={`mt-3 inline-block rounded-full px-2.5 py-1 text-xs ${
+                    photo
+                      ? "bg-white/90 text-[#332d29] [text-shadow:none]"
+                      : "bg-sand-soft"
+                  }`}
+                >
+                  Demanda {product.nivel.toLowerCase()}
+                </span>
+              </article>
+            );
+          })}
         </div>
       </Card>
       <div className="grid gap-5 lg:grid-cols-2">
