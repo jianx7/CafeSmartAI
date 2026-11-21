@@ -15,6 +15,7 @@ import {
   TopChart,
   TrendChart,
 } from "../components/Charts";
+import { downloadSalesCsv } from "../components/downloadCsv";
 
 interface Props {
   data: Dashboard;
@@ -295,18 +296,12 @@ export function Sales({ data, manual }: { data: Dashboard; manual: boolean }) {
           </p>
         </Card>
       ) : (
-        <TrendChart data={data.tendencia} manual={manual} />
+        <TrendChart
+          data={data.tendencia}
+          manual={manual}
+          onDownload={() => downloadSalesCsv(data)}
+        />
       )}
-      <Card>
-        <h2 className="font-semibold">Alcance de la estimación</h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          La línea estimada usa las predicciones guardadas en la Entrega 3 y el
-          candidato elegido por validación. El periodo comienza como máximo el
-          26 de mayo de 2023. Las ventas en USD se calculan multiplicando las
-          unidades por un precio medio por tipo y sucursal obtenido del
-          entrenamiento. El dataset permite observar las unidades vendidas.
-        </p>
-      </Card>
     </>
   );
 }

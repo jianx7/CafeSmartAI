@@ -1,3 +1,4 @@
+import { Download } from "lucide-react";
 import type { Dashboard } from "../../domain/dashboard";
 import { Card, categoryNames, day, number } from "./ui";
 
@@ -55,9 +56,11 @@ export function CategoryChart({ data }: { data: Dashboard["categorias"] }) {
 export function TrendChart({
   data,
   manual,
+  onDownload,
 }: {
   data: Dashboard["tendencia"];
   manual: boolean;
+  onDownload?: () => void;
 }) {
   const max =
     Math.max(1, ...data.flatMap((point) => [point.reales, point.estimadas])) *
@@ -68,10 +71,25 @@ export function TrendChart({
     data.map((p, i) => `${x(i)},${y(p[key])}`).join(" ");
   return (
     <Card>
-      <h2 className="font-semibold">Ventas reales y estimadas</h2>
-      <p className="mt-1 text-xs text-muted">
-        Unidades · periodo de prueba disponible
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="font-semibold">Ventas reales y estimadas</h2>
+          <p className="mt-1 text-xs text-muted">
+            Unidades · periodo de prueba disponible
+          </p>
+        </div>
+        {onDownload && (
+          <button
+            type="button"
+            className="btn"
+            disabled={data.length === 0}
+            onClick={onDownload}
+          >
+            <Download size={15} />
+            Descargar reporte
+          </button>
+        )}
+      </div>
       <svg
         viewBox="0 0 720 245"
         role="img"
