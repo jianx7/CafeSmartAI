@@ -1,6 +1,6 @@
 # CaféSmart AI
 
-Aplicación local para estimar el menú de una cafetería según la sucursal, la fecha y el clima. Este proyecto contiene dos partes que corren al mismo tiempo, cada una en su terminal:
+Aplicación para estimar el menú de una cafetería según la sucursal, la fecha y el clima. Tiene dos partes que corren al mismo tiempo, cada una en su terminal:
 
 - **Backend** (`backend/`): API de FastAPI que ejecuta el modelo de la Entrega 3.
 - **Frontend** (`frontend/`): interfaz en React que consulta a la API.
@@ -19,8 +19,9 @@ Todo lo necesario ya viene incluido: los datos y los modelos entrenados. Solo ne
 
 Haz estos pasos **en orden**. Usa dos terminales de PowerShell y no cierres ninguna mientras uses la app.
 
+### Paso 1 · Abre la carpeta correcta
 
-### Paso 1 · Instala y arranca el backend (Terminal 1)
+### Paso 2 · Instala y arranca el backend (Terminal 1)
 
 ```powershell
 cd backend
@@ -34,7 +35,7 @@ py -3.13 -m venv .venv
 - Debe aparecer `Uvicorn running on http://127.0.0.1:8000`. **Deja esta terminal abierta.**
 - Comprueba que funciona: abre <http://127.0.0.1:8000/health>. Debe mostrar `{"status":"ok"}`.
 
-### Paso 2 · Instala y arranca el frontend (Terminal 2)
+### Paso 3 · Instala y arranca el frontend (Terminal 2)
 
 Abre una segunda terminal con el botón **+** del panel de terminal. Debe iniciar en la carpeta raíz del proyecto.
 
@@ -47,7 +48,7 @@ npm run dev
 - `npm ci` se ejecuta solo la primera vez.
 - Debe aparecer una dirección local `http://127.0.0.1:5173`. **Deja esta terminal abierta.**
 
-### Paso 3 · Abre la aplicación y comprueba que todo funciona
+### Paso 4 · Abre la aplicación y comprueba que todo funciona
 
 1. Abre <http://127.0.0.1:5173> en el navegador.
 2. Pulsa **Cargar ejemplo**.
@@ -77,7 +78,7 @@ python3.13 -m venv .venv
 ./.venv/bin/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-El Paso 2 usa los mismos comandos de npm.
+El Paso 3 usa los mismos comandos de npm.
 
 ## Si algo falla
 
@@ -91,7 +92,7 @@ El Paso 2 usa los mismos comandos de npm.
 | Vite dice que el puerto 5173 está en uso | Ya hay un frontend abierto. Cierra la otra terminal con `Ctrl + C`. |
 | `npm ci` falla con un aviso de versión de Node | Tu Node es anterior a 22.12. Instala una versión nueva. |
 | La página abre, pero muestra un error al estimar | El backend no está corriendo. Revisa la Terminal 1 y pulsa **Reintentar**. |
-| Error 422 o "fecha fuera de rango" | Solo se aceptan fechas del 26 de mayo al 30 de junio de 2023. |
+| Error 422 o "fecha fuera de rango" | Solo se aceptan fechas del 26 de mayo de 2023 al 31 de diciembre de 2027. |
 
 ## Qué hace cada sección de la interfaz
 
@@ -113,14 +114,28 @@ React envía un JSON a `POST /api/predecir`. FastAPI lo valida, ejecuta `predeci
 ## Datos y alcance
 
 - Ventas de Astoria, Hell's Kitchen y Lower Manhattan, de enero a junio de 2023.
-- La interfaz acepta fechas del conjunto de prueba, del 26 de mayo al 30 de junio de 2023.
+- Del 26 de mayo al 30 de junio de 2023 la app trabaja en modo histórico y compara con ventas reales. Del 1 de julio de 2023 al 31 de diciembre de 2027 trabaja en modo escenario (ver más abajo).
 - El clima viene del histórico ERA5 de Open-Meteo. Las tres sucursales comparten la misma serie.
 - Las ventas estimadas usan precios medios en USD calculados con el conjunto de entrenamiento.
 - Cada barra horaria usa el modelo por franja. El total del día usa el modelo diario, por lo que sus cifras pueden diferir.
 - Las clasificaciones Alta, Media y Baja comparan con las unidades medias de los siete días previos.
 - La selección de modelos es la de validación de la Entrega 3.
 
-Para pronosticar fechas actuales hace falta actualizar las ventas, generar las variables de los siete días previos y usar un pronóstico meteorológico disponible antes del turno. Esta versión evalúa casos históricos.
+## Fechas futuras (modo escenario)
+
+Puedes elegir cualquier fecha hasta el 31 de diciembre de 2027, por ejemplo la de hoy. Como no existen ventas reales posteriores a junio de 2023, la app calcula un escenario:
+
+- Las ventas de los últimos siete días del dataset (24 al 30 de junio de 2023) hacen de "ventas recientes".
+- La fecha elegida aporta el día de la semana y el mes.
+- Sin clima manual se usa el modelo sin clima. Si activas «Ajustar clima del escenario», se usa el modelo con clima y los valores que escribas.
+- Como no hay ventas reales, Ventas no muestra la comparación y Sucursales muestra unidades estimadas.
+- Un aviso en pantalla indica que es un escenario y no un pronóstico validado.
+
+Límites que conviene aclarar en la presentación:
+
+- El modelo se entrenó con datos de enero a mayo de 2023 y se evaluó con junio. Nunca vio de julio a diciembre. Los árboles tratan esos meses como los más recientes que conocen, así que las cifras cambian poco entre fechas.
+- Un escenario no está validado. No hay ventas reales con las que compararlo.
+- En un uso real, la base serían las ventas recientes del negocio y el clima sería un pronóstico disponible antes del turno.
 
 ## Pruebas (opcional)
 
