@@ -53,11 +53,7 @@ export function Filters({ catalog, initial, loading, onSubmit }: Props) {
             value={draft.fecha}
             onChange={(e) => setDraft({ ...draft, fecha: e.target.value })}
           />
-          {draft.fecha > catalog.fecha_max && (
-            <small className="text-[11px] text-muted">
-              Posterior al dataset: se calcula como escenario.
-            </small>
-          )}
+        
         </label>
         <label className="field flex-1 min-w-44">
           <span>Horario</span>
@@ -102,6 +98,13 @@ export function Filters({ catalog, initial, loading, onSubmit }: Props) {
           Cargar ejemplo
         </button>
       </div>
+
+      {draft.fecha > catalog.fecha_max && (
+        <p role="status" className="mt-2 text-[11px] text-muted">
+          La fecha es posterior al dataset: se calcula como escenario.
+        </p>
+      )}
+      
       <details className="mt-3 text-xs text-muted">
         <summary className="cursor-pointer">
           Ajustar clima del escenario
